@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Arial', Times, serif;
+}
+
+.container{
+    margin-top: 2%;
+    padding: 1%;
+    background-color: white;
+    box-shadow: -1px -1px 16px -4px rgba(50, 50, 50, 0.75);
+}
+  
+.area-cadastro{
+    padding: 10px;
+}
+
+.campo-pesquisa{
+    margin-left: 5px;
+}
+
+.botao-pesquisar{
+    margin-left: 5px;
+}
+
+.titulo-tela{
+    margin-bottom: 2%;
+}
+
+.area-tabela{
+    margin-top: 2%;
+}
+
+.btn-verde {
+    background-color: #93BE52 !important;
+    border-color: #93BE52 !important;
+    color: #fff !important;
+    cursor: pointer !important;    
+    margin: 2px;
+}
+
+.btn-verde:hover{
+    background-color: #b7df7d !important;
+    border-color: #b7df7d !important;
+    transition: .3s !important;
+}
+
+.btn-cinza {
+    background-color: #868e96 !important;
+    border-color: #868e96 !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: all ease-in 0.3s !important;
+    margin: 2px;
+}
+
+.btn-cinza:hover{
+    background-color: #b8bcc0 !important;
+    border-color: #b8bcc0 !important;
+    transition: .3s !important;
+}
+
+.btn-vermelho {
+    background-color: #FC6180 !important;
+    border-color: #FC6180 !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: all ease-in 0.3s !important;
+    margin: 2px;
+}
+
+.btn-vermelho:hover{
+    background-color: #fa859d !important;
+    border-color: #fa859d !important;
+    transition: .3s !important;
+}
+
+.form-control:focus {
+    border-color: #3d1df5 !important;
+    transition: .3s !important;
+    box-shadow: none !important;
+    background-color: rgb(255, 254, 254);
+} 
+
+.form-control{
+    border-radius: 0 !important;
+}
+
+.btn{
+    border-radius: 0 !important;
+}
+
+.label{
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.destaque-campo-obrigatorio{
+    
+    color: #FC6180 !important;
+}
+
+.rodape{
+    padding: 5%;
+    position: fixed; height: 100px;
+    bottom: 0;
+    width: 100%;
+}
+
+.rodape a{
+    cursor: pointer;
+}
+
+.rodape a:hover{
+    color: blue !important;
+    transition: .3s !important;
+}
+
+#termo-pesquisa{
+    margin-left: 5px;
+    margin-right: 5px;
+}
