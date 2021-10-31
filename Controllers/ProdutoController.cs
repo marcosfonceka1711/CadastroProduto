@@ -24,11 +24,27 @@ namespace CadastroProduto.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllCategories(CancellationToken cancellationToken)
+        public async Task<IActionResult> ListarTodos(CancellationToken cancellationToken)
         {
             var produtos = await _produtoRepositorio.ListarTodos();
 
-            return Ok(produtos);
+            if (produtos.Any())
+                return Ok(produtos);
+            else
+                return NoContent();
+        }
+
+        [HttpGet("{codigo:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> PesquisarPorCodigo(int codigo, CancellationToken cancellationToken)
+        {
+            var produtos = await _produtoRepositorio.RecuperarPorCodigo(codigo);
+
+            if (produtos != null)
+                return Ok(produtos);
+            else
+                return NoContent();
         }
     }
 }
