@@ -24,7 +24,7 @@ namespace CadastroProduto.Controllers
         public async Task<IActionResult> IndexAsync(int? codigo)
         {
             Produto produto = null;
-            
+
             ProdutoViewModel viewModel = null;
 
             if (codigo != null)
@@ -44,7 +44,7 @@ namespace CadastroProduto.Controllers
             Produto produto = null;
             produto = await ProdutoServico.ConverterViewModelEmModel(model);
 
-            if(model.Codigo == 0)
+            if (model.Codigo == 0)
                 await _produtoRepositorio.Inserir(produto);
             else
                 await _produtoRepositorio.Alterar(produto);
@@ -61,7 +61,7 @@ namespace CadastroProduto.Controllers
             List<Produto> listaProduto = null;
             List<ProdutoViewModel> listaProdutoViewModels = null;
 
-            listaProduto = (List<Produto>) _produtoRepositorio.PesquisarPorDescricaoFiltro(descricao, filtro);
+            listaProduto = (List<Produto>)_produtoRepositorio.PesquisarPorDescricaoFiltro(descricao, filtro);
             listaProdutoViewModels = new List<ProdutoViewModel>();
 
 
@@ -71,6 +71,22 @@ namespace CadastroProduto.Controllers
             }
 
             return PartialView("_Tabela", listaProdutoViewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExcluirAsync(int? codigo)
+        {
+            
+            Produto produto = null;
+            produto =  await _produtoRepositorio.RecuperarPorCodigo((int)codigo);
+
+            if (produto != null)
+            {
+                await _produtoRepositorio.Excluir(produto);
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }

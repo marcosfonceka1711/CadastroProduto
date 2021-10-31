@@ -61,6 +61,34 @@ function Gravar() {
 
 }
 
+function Excluir(codigo) {
+    $('#modal-excluir').modal('toggle');
+}
+
+
+$('#botao-modal-sim').on('click', function () {
+    $.ajax("/Cadastro/Excluir", {
+        type: "GET",
+        data: {
+            "codigo": $('#codigo').val()
+        },
+        statusCode: {
+            200: function (response) {
+                window.location.href = "/Home";
+            },
+            404: function (response) {
+                alert('Alguma coisa aconteceu de errado ao excluir... tente novamente mais tarde.');
+            }
+        }
+    });
+});
+
+
+$('#botao-modal-nao').on('click', function () {
+    $('#modal-excluir').modal('toggle');
+});
+
+
 
 
 
