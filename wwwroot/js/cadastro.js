@@ -6,7 +6,7 @@ function Gravar() {
 
     RemoverTodasMensagensValidacao();
 
-
+    var Codigo = $("#codigo").val();
     var Descricao = $("#nome").val();
     var Estoque = $("#estoque").val();
     var Preco = $("#valor").val();
@@ -38,6 +38,7 @@ function Gravar() {
     }
 
     var produto = {
+        Codigo,
         Descricao,
         Estoque,
         Preco

@@ -21,5 +21,17 @@ namespace CadastroProduto.Servicos
 
             return model;
         }
+
+        public static ProdutoViewModel ConverterModelEmViewModel(Produto model)
+        {
+            ProdutoViewModel viewModel = new ProdutoViewModel();
+
+            viewModel.Codigo = model.Codigo;
+            viewModel.Descricao = model.Descricao;
+            viewModel.Estoque = model.Estoque;
+            viewModel.Preco = model.Preco;
+
+            return viewModel;
+        }
     }
 }

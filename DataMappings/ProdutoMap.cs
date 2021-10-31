@@ -31,7 +31,7 @@ namespace CadastroProduto.DataMappings
             {
                 Codigo = 2,
                 Descricao = "Lápis",
-                Estoque = 16,
+                Estoque = -16,
                 Preco = 0.60
             });
 

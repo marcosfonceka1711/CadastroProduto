@@ -19,11 +19,23 @@ namespace CadastroProduto.Controllers
             _produtoRepositorio = produtoRepositorio;
 
         }
-        
+
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync(int? codigo)
         {
-            return View();
+            Produto produto = null;
+            
+            ProdutoViewModel viewModel = null;
+
+            if (codigo != null)
+            {
+                produto = await _produtoRepositorio.RecuperarPorCodigo((int)codigo);
+                viewModel = ProdutoServico.ConverterModelEmViewModel(produto);
+            }
+            else
+                viewModel = new ProdutoViewModel();
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> CadastrarAsync(ProdutoViewModel model)
@@ -32,12 +44,33 @@ namespace CadastroProduto.Controllers
             Produto produto = null;
             produto = await ProdutoServico.ConverterViewModelEmModel(model);
 
-            await _produtoRepositorio.Inserir(produto);
+            if(model.Codigo == 0)
+                await _produtoRepositorio.Inserir(produto);
+            else
+                await _produtoRepositorio.Alterar(produto);
 
             if (produto.Codigo > 0)
                 return Ok();
             else
                 return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult Pesquisar(string descricao, int filtro)
+        {
+            List<Produto> listaProduto = null;
+            List<ProdutoViewModel> listaProdutoViewModels = null;
+
+            listaProduto = (List<Produto>) _produtoRepositorio.PesquisarPorDescricaoFiltro(descricao, filtro);
+            listaProdutoViewModels = new List<ProdutoViewModel>();
+
+
+            foreach (Produto item in listaProduto)
+            {
+                listaProdutoViewModels.Add(ProdutoServico.ConverterModelEmViewModel(item));
+            }
+
+            return PartialView("_Tabela", listaProdutoViewModels);
         }
     }
 }

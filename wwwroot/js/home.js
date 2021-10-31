@@ -1,5 +1,8 @@
 ﻿
-$('#TermoPesquisa').on('input', delay(function () {
+LimparCampos();
+
+
+$('#termo-pesquisa').on('input', delay(function () {
     Pesquisar();
 }));
 
@@ -21,24 +24,27 @@ function delay(f, delay) {
 function Pesquisar() {
     //Declaração de Variáveis dos filtros
     var descricao = "";
+    var filtro = 1;
 
     //Recuperação valores dos filtros
-    var input = document.getElementById('TermoPesquisa');
+    var input = document.getElementById('termo-pesquisa');
     descricao = input.value;
 
+    //Recuperação do filtro por Jquery
+    filtro = $("#filtros").val();
+
     //Area de renderização da tabela da pesquisa
-    var area = $('#Tabela');
+    var area = $('#area-tabela');
 
     //Requisição da pesquisa passando os parâmetros
-    $.get('Cor/PesquisarCores', { descricao: descricao }).done(function (data) {
+    $.get('Cadastro/Pesquisar', { descricao: descricao, filtro: filtro }).done(function (data) {
         area.html(data);
     })
 }
 
 
 function LimparCampos() {
-    $('#CodigoCor').val("");
-    $('#Descricao').val("");
-    $('#RgbCor').val("#FFFFFF");
-    RemoverTodasMensagensValidacao();
+    $('#termo-pesquisa').val("");
+    $('#filtros').val("1");
+    Pesquisar();
 }

@@ -1,0 +1,31 @@
+﻿@using CadastroProduto.ViewModel;
+@model List<ProdutoViewModel>
+
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Estoque</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProdutoViewModel produto in Model)
+        {
+            <tr>
+                <th scope="row">  @produto.Codigo</th>
+                <td>@produto.Descricao</td>
+                <td>@produto.Estoque</td>
+                <td>@produto.Preco.ToString("N2")</td>
+                <td>
+                    <a asp-action="Index" asp-controller="Cadastro" asp-route-codigo="@produto.Codigo" >
+                        <img class="icone-editar-tabela" src="~/imagens/editar.png" alt="Editar" width="25"/>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
