@@ -27,7 +27,7 @@ namespace CadastroProduto
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string conexaoBancoDados = "Server=localhost;DataBase=cadastro_produto;Uid=root;Pwd=run@ssf33;Port=3306";
+            string conexaoBancoDados = "Server=localhost;DataBase=cadastro_produto;Uid=root;Pwd=1111;Port=3306";
             services.AddDbContext<ContextoDb>(dbContextOptions => dbContextOptions.UseMySql(conexaoBancoDados, ServerVersion.AutoDetect(conexaoBancoDados)));
             services.AddTransient<IProdutoRepositorio, ProdutoRepositorio>();
 
