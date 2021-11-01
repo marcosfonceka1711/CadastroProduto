@@ -13,11 +13,6 @@ namespace CadastroProduto.Controllers
     public class CadastroController : Controller
     {
         
-        public CadastroController()
-        {
-        
-        }
-
         [HttpGet]
         public async Task<IActionResult> IndexAsync(int? codigo)
         {
