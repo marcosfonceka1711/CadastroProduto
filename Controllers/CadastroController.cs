@@ -3,21 +3,19 @@ using CadastroProduto.Model;
 using CadastroProduto.Servicos;
 using CadastroProduto.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Newtonsoft.Json;
+using RestSharp;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CadastroProduto.Controllers
 {
     public class CadastroController : Controller
     {
-        private readonly IProdutoRepositorio _produtoRepositorio;
+        //private readonly IProdutoApi _produtoApi;
 
-        public CadastroController(IProdutoRepositorio produtoRepositorio)
+        public CadastroController()
         {
-            _produtoRepositorio = produtoRepositorio;
-
         }
 
         [HttpGet]
@@ -29,8 +27,19 @@ namespace CadastroProduto.Controllers
 
             if (codigo != null)
             {
-                produto = await _produtoRepositorio.RecuperarPorCodigo((int)codigo);
-                viewModel = ProdutoServico.ConverterModelEmViewModel(produto);
+
+                var client = new RestClient(string.Concat("https://localhost:44335/api/produto/pesquisar_por_codigo/", codigo));
+                client.Timeout = -1;
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    produto = JsonConvert.DeserializeObject<Produto>(response.Content);
+                    viewModel = ProdutoServico.ConverterModelEmViewModel(produto);
+                }
+                else
+                    return NotFound();
             }
             else
                 viewModel = new ProdutoViewModel();
@@ -45,11 +54,35 @@ namespace CadastroProduto.Controllers
             produto = await ProdutoServico.ConverterViewModelEmModel(model);
 
             if (model.Codigo == 0)
-                await _produtoRepositorio.Inserir(produto);
-            else
-                await _produtoRepositorio.Alterar(produto);
+            {
+                var client = new RestClient("https://localhost:44335/api/produto/gravar");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", JsonConvert.SerializeObject(produto), ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
 
-            if (produto.Codigo > 0)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    produto = JsonConvert.DeserializeObject<Produto>(response.Content);
+                else
+                    produto = null;
+            }
+            else
+            {
+                var client = new RestClient("https://localhost:44335/api/produto/alterar");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", JsonConvert.SerializeObject(produto), ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    produto = JsonConvert.DeserializeObject<Produto>(response.Content);
+                else
+                    produto = null;
+            }
+
+            if (produto != null && produto.Codigo > 0)
                 return Ok();
             else
                 return NotFound();
@@ -61,29 +94,56 @@ namespace CadastroProduto.Controllers
             List<Produto> listaProduto = null;
             List<ProdutoViewModel> listaProdutoViewModels = null;
 
-            listaProduto = (List<Produto>)_produtoRepositorio.PesquisarPorDescricaoFiltro(descricao, filtro);
+
+            string url = null;
+
+            if (string.IsNullOrWhiteSpace(descricao))
+                url = "https://localhost:44335/api/produto/listar_todos";
+            else
+                url = string.Format("https://localhost:44335/api/produto/por_descricao_filtro/{0}/{1}", descricao == null ? string.Empty : descricao, filtro);
+
+
+            var client = new RestClient(url);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                listaProduto = JsonConvert.DeserializeObject<List<Produto>>(response.Content);
+
             listaProdutoViewModels = new List<ProdutoViewModel>();
 
-
-            foreach (Produto item in listaProduto)
+            if (listaProduto != null)
             {
-                listaProdutoViewModels.Add(ProdutoServico.ConverterModelEmViewModel(item));
+                foreach (Produto item in listaProduto)
+                {
+                    listaProdutoViewModels.Add(ProdutoServico.ConverterModelEmViewModel(item));
+                }
             }
-
             return PartialView("_Tabela", listaProdutoViewModels);
         }
 
         [HttpGet]
         public async Task<IActionResult> ExcluirAsync(int? codigo)
         {
-            
+
             Produto produto = null;
-            produto =  await _produtoRepositorio.RecuperarPorCodigo((int)codigo);
+            var client = new RestClient(string.Concat("https://localhost:44335/api/produto/pesquisar_por_codigo/", codigo));
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                produto = JsonConvert.DeserializeObject<Produto>(response.Content);
 
             if (produto != null)
             {
-                await _produtoRepositorio.Excluir(produto);
-                return Ok();
+                client = new RestClient(string.Concat("https://localhost:44335/api/produto/excluir/", codigo));
+                client.Timeout = -1;
+                request = new RestRequest(Method.GET);
+                response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    return Ok();
             }
 
             return NotFound();

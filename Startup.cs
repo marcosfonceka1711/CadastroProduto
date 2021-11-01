@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,13 @@ namespace CadastroProduto
             string conexaoBancoDados = "Server=localhost;DataBase=cadastro_produto;Uid=root;Pwd=run@ssf33;Port=3306";
             services.AddDbContext<ContextoDb>(dbContextOptions => dbContextOptions.UseMySql(conexaoBancoDados, ServerVersion.AutoDetect(conexaoBancoDados)));
             services.AddTransient<IProdutoRepositorio, ProdutoRepositorio>();
+
+            //string urlBase = "https://localhost:44335/";
+            //services.AddRefitClient<IProdutoApi>()
+            //    .ConfigureHttpClient(
+            //        c => c.BaseAddress = new Uri(urlBase));
+
+
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
         }
