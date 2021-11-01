@@ -22,7 +22,7 @@ A pesquisa faz a busca pela descrição e ordena o resultado de acordo com o que
 - Estoque positivo: retorna somente produtos com estoque maior que zero que contém a descrição usada no parâmetro de pesquisa
 - Estoque negativo: retorna somente produtos com estoque menor/igual a zero que contém a descrição usada no parâmetro de pesquisa.
 --
-Botão excluir fica dentro da alteração, onde é possível visualizar um item cadastrado, alterar e excluir (botão excluir aparece exclusivamente em modo de alteração)
+Botão excluir fica dentro da alteração, onde é possível visualizar um item cadastrado, alterar e excluir (botão excluir aparece exclusivamente em modo de alteração).
 --
 Como implementação futura:
 * pretendo fazer a separação da camada de API em outra solution;
