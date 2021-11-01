@@ -31,10 +31,10 @@ namespace CadastroProduto
             services.AddDbContext<ContextoDb>(dbContextOptions => dbContextOptions.UseMySql(conexaoBancoDados, ServerVersion.AutoDetect(conexaoBancoDados)));
             services.AddTransient<IProdutoRepositorio, ProdutoRepositorio>();
 
-            //string urlBase = "https://localhost:44335/";
-            //services.AddRefitClient<IProdutoApi>()
-            //    .ConfigureHttpClient(
-            //        c => c.BaseAddress = new Uri(urlBase));
+            string urlBase = "https://localhost:44335/";
+            services.AddRefitClient<IProdutoApi>()
+                .ConfigureHttpClient(
+                    c => c.BaseAddress = new Uri(urlBase));
 
 
             services.AddDistributedMemoryCache();

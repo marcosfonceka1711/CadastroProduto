@@ -12,10 +12,10 @@ namespace CadastroProduto.Controllers
 {
     public class CadastroController : Controller
     {
-        //private readonly IProdutoApi _produtoApi;
-
+        
         public CadastroController()
         {
+        
         }
 
         [HttpGet]
@@ -93,7 +93,6 @@ namespace CadastroProduto.Controllers
         {
             List<Produto> listaProduto = null;
             List<ProdutoViewModel> listaProdutoViewModels = null;
-
 
             string url = null;
 
